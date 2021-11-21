@@ -1,23 +1,36 @@
 ﻿using Terminal.Gui;
 
-Application.Init();
+Application.Init(); // need to set the stage, before we can play...
 
-var top = Application.Top;
+//
+// functions
+//
 
-var win = new Window("podli"){
+static bool TODO() {
+    return true;
+}
+
+static bool ConfirmQuit() {
+    int answer = MessageBox.Query(50, 5, "Quit", "Really quit?", "Yes", "No");
+    return (answer == 0);
+}
+
+//
+// setup
+//
+
+Window MainWindow = new Window("podli"){
     X = 0,
     Y = 1,
     Width = Dim.Fill(),
     Height = Dim.Fill()
 };
 
-top.Add(win);
-
 // TODO: Add time to menu... (or somewhere...)
-var menu = new MenuBar(
+MenuBar MainMenu = new MenuBar(
     new MenuBarItem[] {
         new MenuBarItem("_File", new MenuItem[] {
-            new MenuItem("_Quit", "", () => { if (Quit()) top.Running = false; })
+            new MenuItem("_Quit", "", () => { if (ConfirmQuit()) {Application.Top.Running = false; } })
         }),
         new MenuBarItem("_Podcasts", new MenuItem[] {
             new MenuItem("_Subscriptions", "", () => { TODO(); }),
@@ -37,15 +50,11 @@ var menu = new MenuBar(
     }
 );
 
-top.Add(menu);
+//
+// main
+//
 
-static bool TODO() {
-    return true;
-}
-
-static bool Quit() {
-    var result = MessageBox.Query(50, 5, "Quit", "Really quit?", "Yes", "No");
-    return (result == 0);
-}
+Application.Top.Add(MainWindow);
+Application.Top.Add(MainMenu);
 
 Application.Run();
